@@ -1,6 +1,6 @@
-import { MailIcon, PhoneIcon, MapPinIcon } from "lucide-react";
-import { useState, useRef } from "react";
-import { Meteors } from "@/components/ui/meteors";
+import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -10,133 +10,325 @@ const ContactPage = () => {
     message: "",
   });
 
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
-    // Handle form submission logic here
+    setStatus("loading");
+
+    // Simulate form submission
+    setTimeout(() => {
+      console.log("Form submitted:", formData);
+      setStatus("success");
+      setFormData({ name: "", email: "", subject: "", message: "" });
+
+      setTimeout(() => {
+        setStatus("idle");
+      }, 3000);
+    }, 1000);
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
+  const contactInfo = [
+    {
+      icon: Mail,
+      label: "Email",
+      value: "hello@johndoe.com",
+      href: "mailto:hello@johndoe.com",
+    },
+    {
+      icon: Phone,
+      label: "Phone",
+      value: "+1 (555) 123-4567",
+      href: "tel:+15551234567",
+    },
+    {
+      icon: MapPin,
+      label: "Location",
+      value: "San Francisco, CA",
+      href: "#",
+    },
+  ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6 },
+    },
+  };
+
   return (
-    <div id="contact" className="min-h-screen w-full px-4 sm:px-6 lg:px-8 py-16">
-      {/* Header */}
-      <div className="flex flex-col items-center justify-center mb-12">
-        <h1 className="text-center text-white text-4xl sm:text-6xl md:text-8xl font-serif mb-6">
-          Contact
-        </h1>
-        <p className="text-gray-400 text-base md:text-lg max-w-2xl text-center">
-          I'm always open to discussing new projects, creative ideas or
-          opportunities to collaborate.
-        </p>
-      </div>
+    <div
+      id="contact"
+      className="min-h-screen w-full py-20 px-6 md:px-8"
+      style={{ background: 'hsl(var(--background))' }}
+    >
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true }}
+          className="text-center mb-20"
+        >
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 text-balance">
+            Let's Work Together
+          </h2>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+            Have a project in mind? I'd love to hear from you. Let's create something amazing.
+          </p>
+        </motion.div>
 
-      {/* Contact Card */}
-      <div className="max-w-6xl mx-auto bg-gray-800/50 rounded-2xl overflow-hidden shadow-2xl">
-        <div className="flex flex-col md:flex-row">
-          {/* Left Section - Contact Info */}
-          <div className="w-full md:w-2/5 bg-gray-900/50 p-8 relative overflow-hidden">
-            <div className="relative z-10">
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
-                Contact Information
-              </h2>
-              <p className="text-gray-400 mb-8">
-                Feel free to reach out through any of these channels. I'll get back to you as soon as possible.
-              </p>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+          {/* Contact Info */}
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="lg:col-span-1 space-y-6"
+          >
+            {contactInfo.map((info, idx) => {
+              const Icon = info.icon;
+              return (
+                <motion.a
+                  key={idx}
+                  href={info.href}
+                  variants={itemVariants}
+                  className="p-6 rounded-xl border transition-all duration-300 group"
+                  style={{
+                    background: 'hsl(var(--card))',
+                    borderColor: 'hsl(var(--border))',
+                  }}
+                  whileHover={{ y: -3 }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = 'hsl(var(--primary))';
+                    e.currentTarget.style.boxShadow = '0 20px 30px rgba(6, 182, 212, 0.1)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'hsl(var(--border))';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div
+                      className="p-3 rounded-lg mt-1"
+                      style={{
+                        background: 'hsl(var(--primary))/0.1',
+                        color: 'hsl(var(--primary))',
+                      }}
+                    >
+                      <Icon size={24} />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold mb-1">{info.label}</h4>
+                      <p style={{ color: 'hsl(var(--muted-foreground))' }}>
+                        {info.value}
+                      </p>
+                    </div>
+                  </div>
+                </motion.a>
+              );
+            })}
+          </motion.div>
 
-              <div className="space-y-6">
-                <div className="flex items-center space-x-4 text-white hover:translate-x-2 transition-transform duration-300">
-                  <PhoneIcon className="w-6 h-6 text-purple-400" />
-                  <span>+923 0344 90032</span>
-                </div>
-
-                <div className="flex items-center space-x-4 text-white hover:translate-x-2 transition-transform duration-300">
-                  <MailIcon className="w-6 h-6 text-purple-400" />
-                  <span>support@example.com</span>
-                </div>
-
-                <div className="flex items-center space-x-4 text-white hover:translate-x-2 transition-transform duration-300">
-                  <MapPinIcon className="w-6 h-6 text-purple-400" />
-                  <span>San Francisco, USA</span>
-                </div>
-              </div>
-            </div>
-            
-            {/* Animated background */}
-            <Meteors number={20} />
-          </div>
-
-          {/* Right Section - Contact Form */}
-          <div className="w-full md:w-3/5 p-8">
+          {/* Contact Form */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true }}
+            className="lg:col-span-2 p-8 rounded-xl border"
+            style={{
+              background: 'hsl(var(--card))',
+              borderColor: 'hsl(var(--border))',
+            }}
+          >
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="relative">
+                {/* Name */}
+                <div>
+                  <label className="block text-sm font-medium mb-2">Name</label>
                   <input
                     type="text"
                     name="name"
-                    id="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-800/30 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-700"
-                    placeholder="Your Name"
+                    placeholder="Your name"
                     required
+                    className="w-full px-4 py-3 rounded-lg border transition-all duration-300"
+                    style={{
+                      background: 'hsl(var(--input))',
+                      borderColor: 'hsl(var(--border))',
+                      color: 'hsl(var(--foreground))',
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = 'hsl(var(--primary))';
+                      e.target.style.boxShadow = '0 0 0 3px hsl(var(--primary))/0.1';
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = 'hsl(var(--border))';
+                      e.target.style.boxShadow = 'none';
+                    }}
                   />
                 </div>
 
-                <div className="relative">
+                {/* Email */}
+                <div>
+                  <label className="block text-sm font-medium mb-2">Email</label>
                   <input
                     type="email"
                     name="email"
-                    id="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-800/30 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-700"
-                    placeholder="Your Email"
+                    placeholder="Your email"
                     required
+                    className="w-full px-4 py-3 rounded-lg border transition-all duration-300"
+                    style={{
+                      background: 'hsl(var(--input))',
+                      borderColor: 'hsl(var(--border))',
+                      color: 'hsl(var(--foreground))',
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = 'hsl(var(--primary))';
+                      e.target.style.boxShadow = '0 0 0 3px hsl(var(--primary))/0.1';
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = 'hsl(var(--border))';
+                      e.target.style.boxShadow = 'none';
+                    }}
                   />
                 </div>
               </div>
 
-              <div className="relative">
+              {/* Subject */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Subject</label>
                 <input
                   type="text"
                   name="subject"
-                  id="subject"
                   value={formData.subject}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-gray-800/30 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-700"
-                  placeholder="Subject"
+                  placeholder="Project inquiry"
+                  required
+                  className="w-full px-4 py-3 rounded-lg border transition-all duration-300"
+                  style={{
+                    background: 'hsl(var(--input))',
+                    borderColor: 'hsl(var(--border))',
+                    color: 'hsl(var(--foreground))',
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = 'hsl(var(--primary))';
+                    e.target.style.boxShadow = '0 0 0 3px hsl(var(--primary))/0.1';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = 'hsl(var(--border))';
+                    e.target.style.boxShadow = 'none';
+                  }}
                 />
               </div>
 
-              <div className="relative">
+              {/* Message */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Message</label>
                 <textarea
                   name="message"
-                  id="message"
                   value={formData.message}
                   onChange={handleChange}
-                  rows={4}
-                  className="w-full px-4 py-3 bg-gray-800/30 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-700"
-                  placeholder="Your Message"
+                  placeholder="Tell me about your project..."
+                  rows={5}
                   required
+                  className="w-full px-4 py-3 rounded-lg border transition-all duration-300 resize-none"
+                  style={{
+                    background: 'hsl(var(--input))',
+                    borderColor: 'hsl(var(--border))',
+                    color: 'hsl(var(--foreground))',
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = 'hsl(var(--primary))';
+                    e.target.style.boxShadow = '0 0 0 3px hsl(var(--primary))/0.1';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = 'hsl(var(--border))';
+                    e.target.style.boxShadow = 'none';
+                  }}
                 />
               </div>
 
-              <button
+              {/* Status Messages */}
+              {status === "success" && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-4 rounded-lg"
+                  style={{
+                    background: 'hsl(var(--primary))/0.1',
+                    color: 'hsl(var(--primary))',
+                  }}
+                >
+                  ✓ Message sent successfully! I'll get back to you soon.
+                </motion.div>
+              )}
+
+              {status === "error" && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-4 rounded-lg bg-red-500/10 text-red-400"
+                >
+                  ✗ Something went wrong. Please try again.
+                </motion.div>
+              )}
+
+              {/* Submit Button */}
+              <motion.button
                 type="submit"
-                className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium rounded-lg hover:opacity-90 transition-opacity"
+                disabled={status === "loading"}
+                className="w-full px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2"
+                style={{
+                  background: status === "loading" ? 'hsl(var(--primary))/0.5' : 'hsl(var(--primary))',
+                  color: 'hsl(var(--primary-foreground))',
+                }}
+                whileHover={{ scale: status === "loading" ? 1 : 1.02 }}
+                whileTap={{ scale: status === "loading" ? 1 : 0.98 }}
               >
-                Send Message
-              </button>
+                {status === "loading" ? (
+                  <>
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                      className="w-5 h-5 border-2 border-current border-t-transparent rounded-full"
+                    />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Send size={18} />
+                    Send Message
+                  </>
+                )}
+              </motion.button>
             </form>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

@@ -1,198 +1,206 @@
-import { cn } from "@/lib/utils";
-import { Marquee } from "@/components/magicui/marquee";
-import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { Star } from "lucide-react";
 
 const reviews = [
   {
+    id: 1,
     name: "Jack Thompson",
-    username: "@jackdev",
-    body: "The AI integration is mind-blowing! Reduced my development time by 50% and the code quality is outstanding.",
-    img: "https://avatar.vercel.sh/jack",
     role: "Senior Developer",
+    company: "Tech Corp",
+    body: "Working with John was transformative. His attention to detail and technical expertise delivered exactly what we needed on time.",
     rating: 5,
+    image: "https://avatar.vercel.sh/jack",
   },
   {
+    id: 2,
     name: "Jill Martinez",
-    username: "@jilltech",
-    body: "As a tech lead, I'm impressed by the intuitive interface and robust features. Perfect for both beginners and experts.",
-    img: "https://avatar.vercel.sh/jill",
-    role: "Tech Lead",
+    role: "Product Manager",
+    company: "Innovation Labs",
+    body: "John's ability to bridge design and development is exceptional. The results speak for themselves.",
     rating: 5,
+    image: "https://avatar.vercel.sh/jill",
   },
   {
+    id: 3,
     name: "John Chen",
-    username: "@johnc",
-    body: "Game-changing productivity tools. The AI suggestions are surprisingly accurate and helpful.",
-    img: "https://avatar.vercel.sh/john",
-    role: "Full Stack Developer",
-    rating: 4,
+    role: "Startup Founder",
+    company: "Next Gen Startup",
+    body: "We went from concept to launch in record time. John's guidance was invaluable throughout the process.",
+    rating: 5,
+    image: "https://avatar.vercel.sh/john",
   },
   {
+    id: 4,
     name: "Jane Wilson",
-    username: "@janew",
-    body: "Been using it for 6 months now. The continuous improvements and updates keep making it better and better.",
-    img: "https://avatar.vercel.sh/jane",
-    role: "Software Engineer",
-    rating: 5,
-  },
-  {
-    name: "Jenny Kumar",
-    username: "@jennyk",
-    body: "The collaboration features are exceptional. Makes remote pair programming feel natural and efficient.",
-    img: "https://avatar.vercel.sh/jenny",
-    role: "Frontend Developer",
+    role: "Design Director",
+    company: "Creative Studios",
+    body: "The collaboration was seamless. John truly understands the importance of user experience in development.",
     rating: 4,
+    image: "https://avatar.vercel.sh/jane",
   },
   {
-    name: "James Rodriguez",
-    username: "@jamesr",
-    body: "Outstanding documentation and community support. Haven't found a single issue that couldn't be resolved quickly.",
-    img: "https://avatar.vercel.sh/james",
-    role: "DevOps Engineer",
+    id: 5,
+    name: "Jenny Kumar",
+    role: "CTO",
+    company: "Enterprise Solutions",
+    body: "Excellent problem solver with deep technical knowledge. Would recommend without hesitation.",
     rating: 5,
+    image: "https://avatar.vercel.sh/jenny",
+  },
+  {
+    id: 6,
+    name: "James Rodriguez",
+    role: "Marketing Lead",
+    company: "Digital Agency",
+    body: "John went above and beyond to ensure our platform performed perfectly. True professional.",
+    rating: 5,
+    image: "https://avatar.vercel.sh/james",
   },
 ];
 
-const firstRow = reviews.slice(0, reviews.length / 2);
-const secondRow = reviews.slice(reviews.length / 2);
-
 const TestimonialsPage = () => {
-  const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
 
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsMobile(window.innerWidth < 640);
-      setIsTablet(window.innerWidth >= 640 && window.innerWidth < 1024);
-    };
-
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6 },
+    },
+  };
 
   return (
     <div
       id="testimonials"
-      className="flex w-full flex-col items-center justify-center overflow-hidden min-h-screen"
+      className="min-h-screen w-full py-20 px-6 md:px-8"
+      style={{ background: 'hsl(var(--background))' }}
     >
-      <div className="flex flex-col items-center justify-center w-full px-4 sm:px-6 md:px-8">
-        <h1 className="text-white text-4xl sm:text-6xl md:text-8xl font-serif mb-6 sm:mb-8 md:mb-10 mt-6 sm:mt-8 md:mt-10">
-          Testimonials
-        </h1>
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-5xl md:text-7xl font-bold mb-4 text-balance">
+            What Clients Say
+          </h2>
+          <p className="text-lg md:text-xl" style={{ color: 'hsl(var(--muted-foreground))' }}>
+            Trusted by amazing teams around the world
+          </p>
+        </motion.div>
+
+        {/* Testimonials Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          {reviews.map((review) => (
+            <motion.div
+              key={review.id}
+              variants={itemVariants}
+              className="p-6 rounded-xl border transition-all duration-300 flex flex-col"
+              style={{
+                background: 'hsl(var(--card))',
+                borderColor: 'hsl(var(--border))',
+              }}
+              whileHover={{ y: -3 }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'hsl(var(--primary))';
+                e.currentTarget.style.boxShadow = '0 20px 30px rgba(6, 182, 212, 0.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'hsl(var(--border))';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              {/* Star Rating */}
+              <div className="flex gap-1 mb-4">
+                {[...Array(review.rating)].map((_, i) => (
+                  <Star
+                    key={i}
+                    size={16}
+                    style={{
+                      fill: 'hsl(var(--primary))',
+                      color: 'hsl(var(--primary))',
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Review Text */}
+              <p
+                className="flex-grow mb-6 text-base leading-relaxed"
+                style={{
+                  color: 'hsl(var(--muted-foreground))',
+                }}
+              >
+                "{review.body}"
+              </p>
+
+              {/* Author */}
+              <div className="flex items-center gap-4 pt-6 border-t" style={{ borderColor: 'hsl(var(--border))' }}>
+                <img
+                  src={review.image}
+                  alt={review.name}
+                  className="w-12 h-12 rounded-full"
+                />
+                <div>
+                  <h4 className="font-semibold">{review.name}</h4>
+                  <p className="text-sm" style={{ color: 'hsl(var(--muted-foreground))' }}>
+                    {review.role} @ {review.company}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          viewport={{ once: true }}
+          className="mt-20 grid grid-cols-3 gap-6 text-center"
+        >
+          {[
+            { number: "50+", label: "Projects Completed" },
+            { number: "30+", label: "Happy Clients" },
+            { number: "5+", label: "Years Experience" },
+          ].map((stat, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4 + idx * 0.1 }}
+              viewport={{ once: true }}
+            >
+              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'hsl(var(--primary))' }}>
+                {stat.number}
+              </div>
+              <p style={{ color: 'hsl(var(--muted-foreground))' }}>
+                {stat.label}
+              </p>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
-
-      {/* Desktop / Tablet View - Marquee */}
-      {!isMobile && (
-        <>
-          <Marquee 
-            pauseOnHover 
-            className="[--duration:20s] [--gap:1rem] sm:[--gap:2rem] md:[--gap:3rem]"
-          >
-            {firstRow.map((review) => (
-              <ReviewCard 
-                key={review.username} 
-                {...review} 
-                isTablet={isTablet}
-              />
-            ))}
-          </Marquee>
-          <Marquee 
-            reverse 
-            pauseOnHover 
-            className="[--duration:20s] [--gap:1rem] sm:[--gap:2rem] md:[--gap:3rem] mt-4 sm:mt-6"
-          >
-            {secondRow.map((review) => (
-              <ReviewCard 
-                key={review.username} 
-                {...review} 
-                isTablet={isTablet}
-              />
-            ))}
-          </Marquee>
-        </>
-      )}
-
-      {/* Mobile View - Scrollable Grid */}
-      {isMobile && (
-        <div className="w-full px-4 pb-12 mt-4">
-          <div className="flex flex-col gap-4">
-            {reviews.map((review) => (
-              <ReviewCard key={review.username} {...review} isMobile={true} />
-            ))}
-          </div>
-        </div>
-      )}
     </div>
-  );
-};
-
-const ReviewCard = ({
-  img,
-  name,
-  username,
-  body,
-  role,
-  rating,
-  isMobile,
-  isTablet,
-}: {
-  img: string;
-  name: string;
-  username: string;
-  body: string;
-  role: string;
-  rating: number;
-  isMobile?: boolean;
-  isTablet?: boolean;
-}) => {
-  // Adjust card width based on device size
-  const cardWidth = isMobile ? "w-full" : isTablet ? "w-60" : "w-80";
-  // Truncate text on smaller screens
-  const truncatedBody = isTablet && body.length > 100 ? body.substring(0, 100) + "..." : body;
-  
-  return (
-    <figure
-      className={cn(
-        "relative h-full cursor-pointer overflow-hidden rounded-xl border p-4 sm:p-6 transition-all duration-300",
-        cardWidth,
-        // light styles
-        "border-white-950/[.1] bg-white-950/[.01] hover:bg-white-950/[.05]",
-        // dark styles
-        "dark:border-white-50/[.1] dark:bg-white-50/[.10] dark:hover:bg-white-50/[.15]"
-      )}
-    >
-      <div className="flex flex-row items-center gap-3">
-        <img 
-          className="rounded-full" 
-          width={isMobile || isTablet ? "40" : "48"} 
-          height={isMobile || isTablet ? "40" : "48"} 
-          alt={`Avatar of ${name}`}
-          src={img} 
-        />
-        <div className="flex flex-col">
-          <figcaption className="text-sm sm:text-base font-medium text-white dark:text-white">
-            {name}
-          </figcaption>
-          <p className="text-xs sm:text-sm font-medium text-white/40 dark:text-white/40">
-            {username}
-          </p>
-          <p className="text-xs text-white/60 dark:text-white/60 mt-1">
-            {role}
-          </p>
-        </div>
-      </div>
-      <div className="mt-1 flex">
-        {[...Array(rating)].map((_, i) => (
-          <span key={i} className="text-yellow-400">
-            ★
-          </span>
-        ))}
-      </div>
-      <blockquote className="mt-3 sm:mt-4 text-xs sm:text-sm leading-relaxed text-white/90 dark:text-white/90">
-        {isMobile || isTablet ? truncatedBody : body}
-      </blockquote>
-    </figure>
   );
 };
 

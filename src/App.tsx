@@ -5,11 +5,15 @@ import ServicePage from "./pages/ServicePage";
 import WorkPage from "./pages/WorkPage";
 import TestimonialsPage from "./pages/TestimonialsPage";
 import ContactPage from "./pages/ContactPage";
+import { useLenis } from "./hook/useLenis";
+
 const App = () => {
+  useLenis();
+
   return (
     <>
       <Navbar />
-      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden bg-black pt-16">
+      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden pt-16" style={{ background: 'hsl(var(--background))' }}>
         <HomePage />
         <AboutPage />
         <ServicePage />

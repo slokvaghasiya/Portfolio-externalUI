@@ -1,164 +1,196 @@
 import CountUp from "react-countup";
 import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import {
-  FaceSmileIcon,
-  UsersIcon,
-  CurrencyDollarIcon,
-  StarIcon,
-} from "@heroicons/react/24/outline";
-import { Github, Linkedin, Twitter } from "lucide-react";
 import Photo from "@/assets/Photo.webp";
 
 const AboutPage = () => {
-  const mainContentRef = useRef(null);
-  const statsRef = useRef(null);
+  const sectionRef = useRef(null);
+  const contentRef = useRef(null);
 
   useEffect(() => {
-    // Safely register ScrollTrigger
     if (gsap.registerPlugin) {
       gsap.registerPlugin(ScrollTrigger);
     }
 
-    try {
-      // Simple fade-in animation with error handling
-      if (mainContentRef.current) {
-        gsap.fromTo(
-          mainContentRef.current,
-          { opacity: 0, y: 50 },
-          { 
-            opacity: 1, 
-            y: 0, 
-            duration: 1,
-            scrollTrigger: {
-              trigger: mainContentRef.current,
-              start: "top 80%"
-            }
-          }
-        );
-      }
-
-      // Simple animation for stats
-      const statCards = document.querySelectorAll('.stat-card');
-      if (statCards.length) {
-        gsap.fromTo(
-          statCards,
-          { opacity: 0, y: 30 },
-          { 
-            opacity: 1, 
-            y: 0, 
-            duration: 0.8, 
-            stagger: 0.2,
-            scrollTrigger: {
-              trigger: statsRef.current,
-              start: "top 80%"
-            }
-          }
-        );
-      }
-    } catch (error) {
-      console.error("Animation error:", error);
+    if (contentRef.current) {
+      gsap.fromTo(
+        contentRef.current,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          scrollTrigger: {
+            trigger: contentRef.current,
+            start: "top 75%",
+          },
+        }
+      );
     }
   }, []);
 
   const stats = [
     {
       id: 1,
-      title: "Happy Clients",
-      value: 5800,
-      description: "Satisfied customers worldwide",
-      icon: <FaceSmileIcon className="w-8 h-8 text-purple-400" />,
+      title: "Projects Completed",
+      value: 50,
+      description: "Successful deliverables",
     },
     {
       id: 2,
-      title: "Support Team",
-      value: 120,
-      description: "Dedicated professionals",
-      icon: <UsersIcon className="w-8 h-8 text-purple-400" />,
+      title: "Happy Clients",
+      value: 30,
+      description: "Satisfied customers",
     },
     {
       id: 3,
-      title: "Sales Count",
-      value: 345,
-      description: "Successful transactions",
-      icon: <CurrencyDollarIcon className="w-8 h-8 text-purple-400" />,
+      title: "Years Experience",
+      value: 5,
+      description: "In web development",
     },
     {
       id: 4,
-      title: "Awards Won",
-      value: 150,
-      description: "Industry recognition",
-      icon: <StarIcon className="w-8 h-8 text-purple-400" />,
+      title: "Cups of Coffee",
+      value: 1200,
+      description: "Fuel for coding",
     },
   ];
 
   return (
-    <div id="about" className="bg-black min-h-screen w-full p-4 sm:p-6 md:p-8">
-      <div className="flex flex-col items-center justify-center w-full">
-        <h1 className="text-center text-white text-4xl sm:text-6xl md:text-8xl font-serif mb-10 mt-10">
-          About Me
-        </h1>
-      </div>
-
-      {/* Main content section */}
-      <div
-        ref={mainContentRef}
-        className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-8 mb-16 mt-16"
-      >
-        {/* Image section */}
-        <div className="w-full md:w-1/2">
-          <img
-            src={Photo}
-            alt="About Me"
-            className="rounded-lg w-full h-auto max-h-[50vh] object-cover"
-          />
-        </div>
-
-        {/* Information section */}
-        <div className="w-full md:w-1/2 text-white mt-6 md:mt-0">
-          <h2 className="text-3xl md:text-4xl font-serif mb-4 text-center md:text-left">
-            John Doe
+    <div
+      id="about"
+      className="min-h-screen w-full py-20 px-6 md:px-8"
+      style={{ background: 'hsl(var(--background))' }}
+    >
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true }}
+          className="text-center mb-20"
+        >
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 text-balance">
+            About Me
           </h2>
-          <p className="text-lg md:text-xl mb-6 font-serif text-center md:text-left">
-            I am a web developer with a passion for creating beautiful and
-            functional websites. With years of experience in modern web
-            technologies, I help businesses bring their vision to life.
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+            Full-stack developer passionate about building beautiful, functional digital experiences
           </p>
+        </motion.div>
 
-          {/* Social Media Icons */}
-          <div className="flex gap-4 mb-6 justify-center md:justify-start">
-            <a href="#" className="p-2 rounded-full border-2 border-purple-400">
-              <Linkedin className="w-6 h-6" />
-            </a>
-            <a href="#" className="p-2 rounded-full border-2 border-pink-500">
-              <Github className="w-6 h-6" />
-            </a>
-            <a href="#" className="p-2 rounded-full border-2 border-purple-400">
-              <Twitter className="w-6 h-6" />
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* Stats section */}
-      <div
-        ref={statsRef}
-        className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center text-white"
-      >
-        {stats.map((stat) => (
-          <div
-            key={stat.id}
-            className="stat-card p-6 rounded-lg bg-gray-900 transform hover:scale-105 transition-transform duration-300 border-2 border-purple-500"
+        {/* Main Content */}
+        <div ref={contentRef} className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
+          {/* Image */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true }}
+            className="relative flex items-center"
           >
-            <div className="flex justify-center mb-4">{stat.icon}</div>
-            <div className="text-3xl font-serif mb-2 text-purple-400">
-              <CountUp end={stat.value} duration={2.5} />+
+            <div
+              className="relative aspect-square rounded-2xl overflow-hidden border border-border bg-card/40"
+            >
+              <img
+                src={Photo}
+                alt="John Doe"
+                className="w-full h-full object-cover"
+              />
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: 'linear-gradient(135deg, hsl(var(--primary))/0.05 0%, hsl(var(--secondary))/0.05 100%)',
+                }}
+              />
             </div>
-            <div className="text-xl font-serif mb-2">{stat.title}</div>
-            <div className="text-sm text-gray-400">{stat.description}</div>
-          </div>
-        ))}
+
+            {/* Floating badge */}
+            <motion.div
+              className="absolute -bottom-4 -right-4 px-4 py-2 rounded-lg border border-primary bg-card text-primary text-sm font-semibold"
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            >
+              Available
+            </motion.div>
+          </motion.div>
+
+          {/* Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true }}
+            className="flex flex-col justify-center space-y-6"
+          >
+            <div>
+              <h3 className="text-3xl md:text-4xl font-bold mb-3">John Doe</h3>
+              <p className="text-base text-primary font-semibold">Full-Stack Developer & Creator</p>
+            </div>
+            
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              I craft elegant digital experiences by blending cutting-edge technology with thoughtful design. With expertise in modern web technologies, I transform ideas into beautiful, performant solutions.
+            </p>
+            
+            <p className="text-base text-muted-foreground leading-relaxed">
+              My journey has been driven by curiosity and continuous learning. I'm passionate about solving complex problems and collaborating with teams to build products that truly matter.
+            </p>
+
+            {/* Skills Tags */}
+            <div className="pt-4">
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Core Skills</p>
+              <div className="grid grid-cols-2 gap-3">
+                {['React', 'TypeScript', 'Node.js', 'Next.js', 'Tailwind CSS', 'PostgreSQL'].map((skill, idx) => (
+                  <motion.div
+                    key={skill}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: idx * 0.05 }}
+                    viewport={{ once: true }}
+                    className="px-3 py-2 rounded-lg border border-border bg-card/40 text-sm font-medium text-foreground hover:border-primary hover:bg-primary/10 transition-all"
+                  >
+                    {skill}
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="flex gap-4 pt-4">
+              <motion.button
+                className="px-6 py-3 rounded-lg font-semibold bg-primary text-primary-foreground hover:scale-105 transition-transform"
+                whileHover={{ y: -2 }}
+              >
+                Download CV
+              </motion.button>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {stats.map((stat, idx) => (
+            <motion.div
+              key={stat.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              viewport={{ once: true }}
+              className="p-6 rounded-xl border border-border bg-card/40 backdrop-blur-sm hover:border-primary hover:bg-primary/5 transition-all duration-300"
+              whileHover={{ y: -5 }}
+            >
+              <div className="text-4xl md:text-5xl font-bold mb-3 text-primary">
+                <CountUp end={stat.value} duration={2.5} suffix="+" />
+              </div>
+              <h4 className="font-semibold text-lg mb-2 text-foreground">{stat.title}</h4>
+              <p className="text-sm text-muted-foreground">
+                {stat.description}
+              </p>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   );
