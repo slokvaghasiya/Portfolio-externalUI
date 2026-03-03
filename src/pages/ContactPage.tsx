@@ -114,34 +114,16 @@ const ContactPage = () => {
                   key={idx}
                   href={info.href}
                   variants={itemVariants}
-                  className="p-6 rounded-xl border transition-all duration-300 group"
-                  style={{
-                    background: 'hsl(var(--card))',
-                    borderColor: 'hsl(var(--border))',
-                  }}
+                  className="p-6 rounded-xl border border-border bg-card/40 backdrop-blur-sm hover:border-primary hover:bg-primary/5 transition-all duration-300"
                   whileHover={{ y: -3 }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = 'hsl(var(--primary))';
-                    e.currentTarget.style.boxShadow = '0 20px 30px rgba(6, 182, 212, 0.1)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'hsl(var(--border))';
-                    e.currentTarget.style.boxShadow = 'none';
-                  }}
                 >
                   <div className="flex items-start gap-4">
-                    <div
-                      className="p-3 rounded-lg mt-1"
-                      style={{
-                        background: 'hsl(var(--primary))/0.1',
-                        color: 'hsl(var(--primary))',
-                      }}
-                    >
+                    <div className="p-3 rounded-lg mt-1 bg-primary/10 text-primary">
                       <Icon size={24} />
                     </div>
                     <div>
-                      <h4 className="font-semibold mb-1">{info.label}</h4>
-                      <p style={{ color: 'hsl(var(--muted-foreground))' }}>
+                      <h4 className="font-semibold text-foreground mb-1">{info.label}</h4>
+                      <p className="text-muted-foreground">
                         {info.value}
                       </p>
                     </div>
@@ -157,11 +139,7 @@ const ContactPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
             viewport={{ once: true }}
-            className="lg:col-span-2 p-8 rounded-xl border"
-            style={{
-              background: 'hsl(var(--card))',
-              borderColor: 'hsl(var(--border))',
-            }}
+            className="lg:col-span-2 p-8 rounded-xl border border-border bg-card/40 backdrop-blur-sm"
           >
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

@@ -1,4 +1,5 @@
 import { Navbar } from "./layout/Navbar";
+import { Footer } from "./layout/Footer";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import ServicePage from "./pages/ServicePage";
@@ -13,7 +14,7 @@ const App = () => {
   return (
     <>
       <Navbar />
-      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden pt-16" style={{ background: 'hsl(var(--background))' }}>
+      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden pt-16 bg-background">
         <HomePage />
         <AboutPage />
         <ServicePage />
@@ -21,6 +22,7 @@ const App = () => {
         <TestimonialsPage />
         <ContactPage />
       </div>
+      <Footer />
     </>
   );
 };

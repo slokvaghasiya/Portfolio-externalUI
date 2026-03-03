@@ -91,12 +91,12 @@ const TestimonialsPage = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <h2 className="text-5xl md:text-7xl font-bold mb-4 text-balance">
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 text-balance">
             What Clients Say
           </h2>
-          <p className="text-lg md:text-xl" style={{ color: 'hsl(var(--muted-foreground))' }}>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
             Trusted by amazing teams around the world
           </p>
         </motion.div>
@@ -113,20 +113,8 @@ const TestimonialsPage = () => {
             <motion.div
               key={review.id}
               variants={itemVariants}
-              className="p-6 rounded-xl border transition-all duration-300 flex flex-col"
-              style={{
-                background: 'hsl(var(--card))',
-                borderColor: 'hsl(var(--border))',
-              }}
+              className="p-6 rounded-xl border border-border bg-card/40 backdrop-blur-sm hover:border-primary hover:bg-primary/5 transition-all duration-300 flex flex-col"
               whileHover={{ y: -3 }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'hsl(var(--primary))';
-                e.currentTarget.style.boxShadow = '0 20px 30px rgba(6, 182, 212, 0.1)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'hsl(var(--border))';
-                e.currentTarget.style.boxShadow = 'none';
-              }}
             >
               {/* Star Rating */}
               <div className="flex gap-1 mb-4">
@@ -134,34 +122,26 @@ const TestimonialsPage = () => {
                   <Star
                     key={i}
                     size={16}
-                    style={{
-                      fill: 'hsl(var(--primary))',
-                      color: 'hsl(var(--primary))',
-                    }}
+                    className="fill-primary text-primary"
                   />
                 ))}
               </div>
 
               {/* Review Text */}
-              <p
-                className="flex-grow mb-6 text-base leading-relaxed"
-                style={{
-                  color: 'hsl(var(--muted-foreground))',
-                }}
-              >
+              <p className="flex-grow mb-6 text-base leading-relaxed text-muted-foreground">
                 "{review.body}"
               </p>
 
               {/* Author */}
-              <div className="flex items-center gap-4 pt-6 border-t" style={{ borderColor: 'hsl(var(--border))' }}>
+              <div className="flex items-center gap-4 pt-6 border-t border-border">
                 <img
                   src={review.image}
                   alt={review.name}
                   className="w-12 h-12 rounded-full"
                 />
                 <div>
-                  <h4 className="font-semibold">{review.name}</h4>
-                  <p className="text-sm" style={{ color: 'hsl(var(--muted-foreground))' }}>
+                  <h4 className="font-semibold text-foreground">{review.name}</h4>
+                  <p className="text-sm text-muted-foreground">
                     {review.role} @ {review.company}
                   </p>
                 </div>
@@ -176,7 +156,7 @@ const TestimonialsPage = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           viewport={{ once: true }}
-          className="mt-20 grid grid-cols-3 gap-6 text-center"
+          className="mt-24 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center"
         >
           {[
             { number: "50+", label: "Projects Completed" },
@@ -190,10 +170,10 @@ const TestimonialsPage = () => {
               transition={{ delay: 0.4 + idx * 0.1 }}
               viewport={{ once: true }}
             >
-              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'hsl(var(--primary))' }}>
+              <div className="text-4xl md:text-5xl font-bold mb-2 text-primary">
                 {stat.number}
               </div>
-              <p style={{ color: 'hsl(var(--muted-foreground))' }}>
+              <p className="text-muted-foreground">
                 {stat.label}
               </p>
             </motion.div>

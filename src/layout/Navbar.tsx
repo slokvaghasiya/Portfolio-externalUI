@@ -54,18 +54,13 @@ function DesktopNavbar({ activeSection }: { activeSection?: string }) {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-xl"
-      style={{
-        background: 'hsl(var(--background))/0.8',
-        borderColor: 'hsl(var(--border))',
-      }}
-    >
+    <div className="fixed top-0 left-0 right-0 z-50 border-b border-border backdrop-blur-xl bg-background/80">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
-        <div className="text-2xl font-bold">
-          <span style={{ color: 'hsl(var(--primary))' }}>John</span>
-          <span style={{ color: 'hsl(var(--foreground))' }}>Doe</span>
-        </div>
+        <motion.div className="text-2xl font-bold" whileHover={{ scale: 1.05 }}>
+          <span className="text-primary">John</span>
+          <span className="text-foreground">Doe</span>
+        </motion.div>
 
         {/* Nav Links */}
         <nav className="hidden md:flex items-center gap-8">
@@ -77,46 +72,37 @@ function DesktopNavbar({ activeSection }: { activeSection?: string }) {
             { name: "Testimonials", id: "testimonials" },
             { name: "Contact", id: "contact" },
           ].map((item) => (
-            <button
+            <motion.button
               key={item.id}
               onClick={() => scrollToSection(item.id)}
-              className="relative font-medium transition-all duration-300 group"
-              style={{
-                color: activeSection === item.id ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground))',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = 'hsl(var(--foreground))';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = activeSection === item.id ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground))';
-              }}
+              className={`text-sm font-medium transition-colors duration-300 relative pb-1 ${
+                activeSection === item.id 
+                  ? 'text-primary' 
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+              whileHover={{ y: -2 }}
             >
               {item.name}
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300" />
-            </button>
+              {activeSection === item.id && (
+                <motion.span 
+                  className="absolute bottom-0 left-0 w-full h-0.5 bg-primary rounded-full"
+                  layoutId="activeNav"
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                />
+              )}
+            </motion.button>
           ))}
         </nav>
 
         {/* CTA + Mobile Menu */}
         <div className="flex items-center gap-4">
-          <button
-            className="hidden sm:inline-block px-6 py-2 rounded-lg font-medium transition-all duration-300"
-            style={{
-              background: 'hsl(var(--primary))',
-              color: 'hsl(var(--primary-foreground))',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 20px 30px rgba(6, 182, 212, 0.3)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
+          <motion.button
+            className="hidden sm:inline-block px-6 py-2 rounded-lg font-semibold bg-primary text-primary-foreground hover:scale-105 transition-transform"
+            whileHover={{ y: -2 }}
             onClick={() => scrollToSection("contact")}
           >
             Let's Talk
-          </button>
+          </motion.button>
         </div>
       </div>
     </div>
@@ -144,32 +130,27 @@ function MobileNavbar({
   return (
     <>
       {/* Fixed top bar */}
-      <div className="fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-xl md:hidden"
-        style={{
-          background: 'hsl(var(--background))/0.8',
-          borderColor: 'hsl(var(--border))',
-        }}
-      >
+      <div className="fixed top-0 left-0 right-0 z-50 border-b border-border backdrop-blur-xl md:hidden bg-background/80">
         <div className="flex items-center justify-between px-6 py-4">
           <div className="font-bold text-xl">
-            <span style={{ color: 'hsl(var(--primary))' }}>John</span>
-            <span style={{ color: 'hsl(var(--foreground))' }}>Doe</span>
+            <span className="text-primary">John</span>
+            <span className="text-foreground">Doe</span>
           </div>
-          <button 
+          <motion.button 
             onClick={() => setIsOpen(!isOpen)}
-            className="p-2"
-            style={{ color: 'hsl(var(--foreground))' }}
+            className="p-2 text-foreground"
             aria-label="Toggle menu"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
           >
             {isOpen ? <X size={24} /> : <MenuIcon size={24} />}
-          </button>
+          </motion.button>
         </div>
       </div>
 
       {/* Mobile menu overlay with animation */}
       <motion.div 
-        className="fixed inset-0 z-40 overflow-hidden"
-        style={{ background: 'hsl(var(--background))' }}
+        className="fixed inset-0 z-40 overflow-hidden bg-background"
         initial={{ x: "100%" }}
         animate={{ x: isOpen ? 0 : "100%" }}
         transition={{ 
@@ -192,11 +173,11 @@ function MobileNavbar({
               <motion.button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="text-left text-2xl font-bold py-3 px-4 rounded-lg transition-all duration-300"
-                style={{
-                  color: activeSection === item.id ? 'hsl(var(--primary))' : 'hsl(var(--foreground))',
-                  background: activeSection === item.id ? 'hsl(var(--primary))/0.1' : 'transparent',
-                }}
+                className={`text-left text-2xl font-bold py-3 px-4 rounded-lg transition-all duration-300 ${
+                  activeSection === item.id 
+                    ? 'text-primary bg-primary/10' 
+                    : 'text-foreground'
+                }`}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: isOpen ? 1 : 0, x: isOpen ? 0 : 20 }}
                 transition={{ 
@@ -217,24 +198,16 @@ function MobileNavbar({
             animate={{ opacity: isOpen ? 1 : 0 }}
             transition={{ delay: 0.2, duration: 0.3 }}
           >
-            <button
+            <motion.button
               onClick={() => scrollToSection("contact")}
-              className="w-full px-6 py-3 rounded-lg font-medium mb-8 transition-all duration-300"
-              style={{
-                background: 'hsl(var(--primary))',
-                color: 'hsl(var(--primary-foreground))',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
+              className="w-full px-6 py-3 rounded-lg font-semibold bg-primary text-primary-foreground mb-8"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               Let's Talk
-            </button>
+            </motion.button>
 
-            <div style={{ color: 'hsl(var(--muted-foreground))' }} className="text-sm font-medium mb-4">Connect with me</div>
+            <p className="text-sm font-medium text-muted-foreground mb-4">Connect with me</p>
             <div className="flex space-x-4">
               {[
                 { icon: Github, href: "#" },
@@ -246,23 +219,9 @@ function MobileNavbar({
                   <motion.a 
                     key={index}
                     href={social.href}
-                    className="p-3 rounded-lg border transition-all duration-300"
-                    style={{
-                      borderColor: 'hsl(var(--border))',
-                      color: 'hsl(var(--muted-foreground))',
-                    }}
+                    className="p-3 rounded-lg border border-border bg-card/40 text-muted-foreground hover:border-primary hover:text-primary hover:bg-primary/10 transition-all"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = 'hsl(var(--primary))';
-                      e.currentTarget.style.color = 'hsl(var(--primary))';
-                      e.currentTarget.style.background = 'hsl(var(--primary))/0.1';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = 'hsl(var(--border))';
-                      e.currentTarget.style.color = 'hsl(var(--muted-foreground))';
-                      e.currentTarget.style.background = 'transparent';
-                    }}
                   >
                     <Icon size={20} />
                   </motion.a>
