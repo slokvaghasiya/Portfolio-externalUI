@@ -2,14 +2,6 @@ import { motion } from "framer-motion";
 import { ArrowDown, Github, Linkedin, Twitter } from "lucide-react";
 
 const Home = () => {
-
-  const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
